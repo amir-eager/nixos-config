@@ -56,7 +56,7 @@
 
   # کاملاً غیرفعال کردن GNOME و حذف پکیج‌های اضافی‌اش
   services.desktopManager.gnome.enable = false;
-  services.xserver.displayManager.gdm.enable = false;
+  services.displayManager.gdm.enable = false;
 
   environment.gnome.excludePackages = (with pkgs; [
     gnome.gnome-terminal
