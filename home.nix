@@ -1,17 +1,27 @@
 { config, pkgs, ... }:
 
 {
-  home.username = "amir";
-  home.homeDirectory = "/home/amir";
+  # نسخه state برای home-manager
   home.stateVersion = "25.11";
 
-  # اینجا بعداً برنامه‌ها و dotfiles رو اضافه می‌کنیم
+  # username و homeDirectory (اختیاری اگر useUserPackages=true باشه)
+  home.username = "amir";
+  home.homeDirectory = "/home/amir";
+
+  # برنامه‌های نمونه که فقط برای کاربر amir نصب می‌شن
   home.packages = with pkgs; [
-    # مثلاً
     neovim
     git
+    htop
+    # بعداً می‌تونی zsh, tmux, qtile config و ... اضافه کنی
   ];
 
-  # مثلاً zsh رو فعال کنیم
-  programs.zsh.enable = true;
+  # مثلاً zsh رو فعال کنیم (اختیاری)
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+  };
+
+  # اینجا بعداً dotfiles مثل ~/.config/qtile/config.py رو تعریف می‌کنیم
 }
