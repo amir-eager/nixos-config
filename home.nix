@@ -14,6 +14,12 @@
     git
     htop
     # بعداً می‌تونی zsh, tmux, qtile config و ... اضافه کنی
+    # ----- qtlie apps -----
+    brightnessctl
+    flameshot
+    betterlockscreen
+    rofi-wayland   # یا rofi اگر X11 هست
+    pcmanfm
   ];
 
   # مثلاً zsh رو فعال کنیم (اختیاری)
