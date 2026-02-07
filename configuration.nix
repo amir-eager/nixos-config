@@ -19,6 +19,11 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Bluetooth
+  hardware.bluetooth.enable = true;
+  # power management
+  hardware.bluetooth.powerOnBoot = true;
+
   # Set your time zone.
   time.timeZone = "Asia/Tehran";
 
@@ -89,6 +94,9 @@
   # Install firefox.
   programs.firefox.enable = true;
 
+  # Install and uss zsh
+  programs.zsh.enable = true;
+
   # Allow unfree packages (اگر بعداً nvidia یا چیزهای دیگه اضافه شد)
   nixpkgs.config.allowUnfree = true;
 
@@ -97,12 +105,17 @@
     vim git curl wget htop tree unzip ripgrep fd bat
     inetutils pciutils usbutils
 
-    # برای Qtile و استفاده روزمره
     alacritty      # ترمینال سریع (پیشنهاد می‌کنم)
-    rofi           # launcher (Super + d یا Mod + d)
     firefox
-    # picom        # compositor برای transparency و سایه‌ها (اختیاری)
   ];
+
+  fonts = {
+    enableDefaultPackages = true;
+    packages = with pkgs; [
+      jetbrains-mono
+      nerd-fonts.jetbrains-mono
+    ];
+  };
 
   # Sound with pipewire (keep as is)
   services.pulseaudio.enable = false;
