@@ -16,7 +16,6 @@
 
   home.packages = with pkgs; [
     # Editors & dev tools
-    neovim
     git
 
     # System monitoring
