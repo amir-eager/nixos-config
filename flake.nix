@@ -1,36 +1,51 @@
+# flake.nix — Amir's NixOS + Home-Manager configuration
+
 {
-  description = "Amir's NixOS + Home-Manager config";
+  description = "Amir's NixOS configuration with Home-Manager";
 
   inputs = {
+    # Stable channel (recommended for reliability)
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    # اگر unstable می‌خوای: "github:NixOS/nixpkgs/nixos-unstable"
+
+    # If you want latest packages (more bleeding-edge):
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
-      inputs.nixpkgs.follows = "nixpkgs";   # هم‌ نسخه با nixpkgs اصلی
+      inputs.nixpkgs.follows = "nixpkgs";  # Use the same nixpkgs version
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }: {
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./hardware-configuration.nix
-        ./configuration.nix
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  let
+    system = "x86_64-linux";
+  in {
+    # Main NixOS configuration
+    nixosConfigurations = {
+      # Primary config (use with: nixos-rebuild switch --flake .#nixos)
+      nixos = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = { inherit inputs; };  # Pass inputs to modules if needed
+        modules = [
+          ./hardware-configuration.nix
+          ./configuration.nix
 
-        # اضافه کردن home-manager به عنوان module
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
 
-          # کاربر amir رو تعریف می‌کنیم
-          home-manager.users.amir = import ./home.nix;
+            # Import user config for amir
+            home-manager.users.amir = import ./home.nix;
 
-          # اختیاری: اجازه بده home-manager از nixpkgs سیستم استفاده کنه
-          home-manager.extraSpecialArgs = { inherit nixpkgs; };
-        }
-      ];
+            # Optional: pass extra arguments to home-manager
+            home-manager.extraSpecialArgs = { inherit inputs; };
+          }
+        ];
+      };
+
+      # Optional: default alias so you can just do nixos-rebuild switch --flake .
+      default = self.nixosConfigurations.nixos;
     };
   };
 }

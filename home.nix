@@ -1,43 +1,55 @@
+# home.nix — User-specific configuration with Home-Manager
+# Manages dotfiles, user packages, themes, and programs for amir
+
 { config, pkgs, ... }:
 
 {
-  # This is the state version for Home Manager
+  # Important: must match the NixOS stateVersion
   home.stateVersion = "25.11";
 
   home.username = "amir";
   home.homeDirectory = "/home/amir";
 
-  fonts.fontconfig.enable = true;
+  # ──────────────────────────────────────────────────────────────
+  # User packages (not managed by programs.*)
+  # ──────────────────────────────────────────────────────────────
 
-  # Base user packages (not managed by programs.*)
   home.packages = with pkgs; [
+    # Editors & dev tools
     neovim
     git
+
+    # System monitoring
     htop
 
-    # Qtile / desktop related
+    # Desktop utilities
     brightnessctl
     flameshot
     betterlockscreen
-    rofi
-    pcmanfm
+    rofi           # application launcher
+    pcmanfm        # lightweight file manager with thumbnails
 
-    # Terminal tools (some are enabled via programs.* but listed here for clarity)
+    # Terminal & search tools
     ripgrep
     fd
+    bat            # cat with syntax highlighting
 
-    # extract file 
+    # Archive extraction
     unzip
     unrar
     p7zip
     zstd
   ];
 
-  # Import modular configurations
+
+  # ──────────────────────────────────────────────────────────────
+  # Modular imports (add one by one as we progress)
+  # ──────────────────────────────────────────────────────────────
+
   imports = [
     ./modules/terminal.nix
-    # ./modules/desktop.nix      # uncomment later
-    # ./modules/editor.nix       # uncomment later
-    # ./modules/git.nix          # uncomment later
+    # ./modules/desktop.nix
+    # ./modules/editor.nix
+    # ./modules/git.nix
   ];
 }
