@@ -49,7 +49,7 @@
   imports = [
     ./modules/terminal.nix
     # ./modules/desktop.nix
-    # ./modules/editor.nix
+    ./modules/nvim.nix
     # ./modules/git.nix
   ];
 }
